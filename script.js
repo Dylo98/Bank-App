@@ -89,7 +89,7 @@ const displayMovmentsDates = function (data, value) {
   }
 };
 
-const displayMovementsCurrency = function (locale, currency, value) {
+const displayCurrency = function (locale, currency, value) {
   return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: currency,
@@ -102,7 +102,7 @@ const displayMovements = function (acc) {
   movs.forEach((mov, i) => {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
 
-    const currencyMov = displayMovementsCurrency(acc.locale, acc.currency, mov);
+    const currencyMov = displayCurrency(acc.locale, acc.currency, mov);
 
     const date = new Date(acc.movementsDates[i]);
     const displayMovData = displayMovmentsDates(date, acc.locale);
@@ -121,3 +121,9 @@ const displayMovements = function (acc) {
 };
 
 displayMovements(accounts[0]);
+
+const displayBalance = function (acc) {
+  const balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = displayCurrency(acc.locale, acc.currency, balance);
+};
+displayBalance(accounts[0]);
