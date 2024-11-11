@@ -120,13 +120,10 @@ const displayMovements = function (acc) {
   });
 };
 
-displayMovements(accounts[0]);
-
 const displayBalance = function (acc) {
   const balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
   labelBalance.textContent = displayCurrency(acc.locale, acc.currency, balance);
 };
-displayBalance(accounts[0]);
 
 const displaySummary = function (acc) {
   // In movements
@@ -157,7 +154,6 @@ const displaySummary = function (acc) {
     interest
   );
 };
-displaySummary(accounts[0]);
 
 const createUsernames = function (accounts) {
   accounts.forEach(acc => {
@@ -180,9 +176,18 @@ const updateUI = function (acc) {
 const clearInput = function () {
   inputLoginUsername.value = '';
   inputLoginPin.value = '';
+  inputTransferTo.value = '';
+  inputTransferAmount.value = '';
 };
 
 let currentAccount;
+
+///////////////////
+// FAKE ALWAYS LOGGED IN
+// currentAccount = account1;
+// updateUI(currentAccount);
+// containerApp.style.opacity = 100;
+///////////////
 
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault();
@@ -196,5 +201,33 @@ btnLogin.addEventListener('click', function (e) {
     containerApp.style.opacity = 100;
     updateUI(currentAccount);
     clearInput();
+  }
+});
+
+btnTransfer.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const amount = +inputTransferAmount.value;
+  const balance = currentAccount.movements
+    .filter(mov => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  const receiverAcc = accounts.find(
+    acc => acc.username === inputTransferTo.value
+  );
+
+  if (
+    amount > 0 &&
+    receiverAcc &&
+    balance >= amount &&
+    receiverAcc?.username !== currentAccount.username
+  ) {
+    currentAccount.movements.push(-amount);
+    receiverAcc.movements.push(amount);
+    console.log('ok');
+    currentAccount.movementsDates.push(new Date().toISOString());
+    receiverAcc.movementsDates.push(new Date().toISOString());
+
+    clearInput();
+    updateUI(currentAccount);
   }
 });
