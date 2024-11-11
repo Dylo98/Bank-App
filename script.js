@@ -127,3 +127,34 @@ const displayBalance = function (acc) {
   labelBalance.textContent = displayCurrency(acc.locale, acc.currency, balance);
 };
 displayBalance(accounts[0]);
+
+const displaySummary = function (acc) {
+  // In movements
+  const sumIn = acc.movements
+    .filter(mov => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumIn.textContent = displayCurrency(acc.locale, acc.currency, sumIn);
+
+  // Out movements
+  const sumOut = acc.movements
+    .filter(mov => mov < 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumOut.textContent = displayCurrency(
+    acc.locale,
+    acc.currency,
+    Math.abs(sumOut)
+  );
+
+  // Interest movements
+  const interest = acc.movements
+    .filter(mov => mov > 0)
+    .map(mov => (mov * acc.interestRate) / 100)
+    .filter(mov => mov >= 1)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumInterest.textContent = displayCurrency(
+    acc.locale,
+    acc.currency,
+    interest
+  );
+};
+displaySummary(accounts[0]);
