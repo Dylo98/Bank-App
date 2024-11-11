@@ -171,6 +171,12 @@ const createUsernames = function (accounts) {
 
 createUsernames(accounts);
 
+const updateUI = function (acc) {
+  displayMovements(acc);
+  displayBalance(acc);
+  displaySummary(acc);
+};
+
 let currentAccount;
 
 btnLogin.addEventListener('click', function (e) {
@@ -182,9 +188,7 @@ btnLogin.addEventListener('click', function (e) {
   if (currentAccount?.pin === +inputLoginPin.value) {
     const greetingName = currentAccount.owner.split(' ')[0];
     labelWelcome.textContent = `Welcome ${greetingName}`;
-    displayMovements(currentAccount);
-    displayBalance(currentAccount);
-    displaySummary(currentAccount);
     containerApp.style.opacity = 100;
+    updateUI(currentAccount);
   }
 });
