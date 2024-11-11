@@ -177,6 +177,11 @@ const updateUI = function (acc) {
   displaySummary(acc);
 };
 
+const clearInput = function () {
+  inputLoginUsername.value = '';
+  inputLoginPin.value = '';
+};
+
 let currentAccount;
 
 btnLogin.addEventListener('click', function (e) {
@@ -190,5 +195,6 @@ btnLogin.addEventListener('click', function (e) {
     labelWelcome.textContent = `Welcome ${greetingName}`;
     containerApp.style.opacity = 100;
     updateUI(currentAccount);
+    clearInput();
   }
 });
