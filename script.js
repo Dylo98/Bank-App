@@ -18,9 +18,9 @@ const account1 = {
     '2024-04-01T10:17:24.185Z',
     '2024-05-08T14:11:59.604Z',
     '2024-05-27T17:01:17.194Z',
-    '2024-07-11T23:36:17.929Z',
-    '2024-11-07T10:51:36.790Z',
-    '2024-11-08T10:51:36.790Z',
+    '2024-11-06T23:36:17.929Z',
+    '2024-11-10T10:51:36.790Z',
+    '2024-11-11T10:51:36.790Z',
   ],
   currency: 'PLN',
   locale: 'pl-PL', // de-DE
@@ -75,3 +75,49 @@ const inputTransferAmount = document.querySelector('.form__input--amount');
 const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
+
+const displayMovmentsDates = function (data, value) {
+  const calcDaysPassed = function (data1, data2) {
+    return Math.round(Math.abs(data1 - data2) / (1000 * 60 * 60 * 24));
+  };
+  const daysPassed = calcDaysPassed(new Date(), data);
+  if (daysPassed === 0) return 'Today';
+  else if (daysPassed === 1) return 'Yesterday';
+  else if (daysPassed <= 7) return `${daysPassed} days ago`;
+  else {
+    return new Intl.DateTimeFormat(value).format(data);
+  }
+};
+
+const displayMovementsCurrency = function (locale, currency, value) {
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: currency,
+  }).format(value);
+};
+
+const displayMovements = function (acc) {
+  const movs = acc.movements;
+
+  movs.forEach((mov, i) => {
+    const type = mov > 0 ? 'deposit' : 'withdrawal';
+
+    const currencyMov = displayMovementsCurrency(acc.locale, acc.currency, mov);
+
+    const date = new Date(acc.movementsDates[i]);
+    const displayMovData = displayMovmentsDates(date, acc.locale);
+    const html = `
+        <div class="movements__row">
+          <div class="movements__type movements__type--${type}">${
+      i + 1
+    } ${type}</div>
+          <div class="movements__date">${displayMovData}</div>
+          <div class="movements__value">${currencyMov}</div>
+        </div>
+    `;
+
+    containerMovements.insertAdjacentHTML('afterbegin', html);
+  });
+};
+
+displayMovements(accounts[0]);
