@@ -170,3 +170,21 @@ const createUsernames = function (accounts) {
 };
 
 createUsernames(accounts);
+
+let currentAccount;
+
+btnLogin.addEventListener('click', function (e) {
+  e.preventDefault();
+  currentAccount = accounts.find(
+    acc => acc.username === inputLoginUsername.value
+  );
+
+  if (currentAccount?.pin === +inputLoginPin.value) {
+    const greetingName = currentAccount.owner.split(' ')[0];
+    labelWelcome.textContent = `Welcome ${greetingName}`;
+    displayMovements(currentAccount);
+    displayBalance(currentAccount);
+    displaySummary(currentAccount);
+    containerApp.style.opacity = 100;
+  }
+});
