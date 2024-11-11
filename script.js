@@ -76,6 +76,12 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
+// Variables
+
+let currentAccount;
+
+//Functions
+
 const displayMovmentsDates = function (data, value) {
   const calcDaysPassed = function (data1, data2) {
     return Math.round(Math.abs(data1 - data2) / (1000 * 60 * 60 * 24));
@@ -180,14 +186,14 @@ const clearInput = function () {
   inputTransferAmount.value = '';
 };
 
-let currentAccount;
-
 ///////////////////
 // FAKE ALWAYS LOGGED IN
 // currentAccount = account1;
 // updateUI(currentAccount);
 // containerApp.style.opacity = 100;
 ///////////////
+
+// Events
 
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault();
