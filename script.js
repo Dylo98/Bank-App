@@ -158,3 +158,15 @@ const displaySummary = function (acc) {
   );
 };
 displaySummary(accounts[0]);
+
+const createUsernames = function (accounts) {
+  accounts.forEach(acc => {
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(acc => acc[0])
+      .join('');
+  });
+};
+
+createUsernames(accounts);
